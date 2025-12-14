@@ -45,4 +45,17 @@ export class App {
     // 新しいTODOをリストの先頭に追加
     this.todos.update(todos => [newTodo, ...todos]);
   }
+
+  // Phase 3: 完了切り替えと削除機能
+  protected toggleTodo(id: string): void {
+    this.todos.update(todos =>
+      todos.map(todo =>
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo
+      )
+    );
+  }
+
+  protected deleteTodo(id: string): void {
+    this.todos.update(todos => todos.filter(todo => todo.id !== id));
+  }
 }

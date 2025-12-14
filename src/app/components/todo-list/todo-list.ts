@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, input } from '@angular/core';
+import { Component, ChangeDetectionStrategy, input, output } from '@angular/core';
 import { Todo } from '../../models/todo.model';
 import { TodoItem } from '../todo-item/todo-item';
 
@@ -9,7 +9,11 @@ import { TodoItem } from '../todo-item/todo-item';
   template: `
     <div class="mt-4">
       @for (todo of todos(); track todo.id) {
-        <app-todo-item [todo]="todo" />
+        <app-todo-item
+          [todo]="todo"
+          (toggled)="todoToggled.emit(todo.id)"
+          (deleted)="todoDeleted.emit(todo.id)"
+        />
       } @empty {
         <p class="text-gray-400 text-center p-4">No todos yet</p>
       }
@@ -18,4 +22,6 @@ import { TodoItem } from '../todo-item/todo-item';
 })
 export class TodoList {
   readonly todos = input.required<Todo[]>();
+  readonly todoToggled = output<string>();
+  readonly todoDeleted = output<string>();
 }
