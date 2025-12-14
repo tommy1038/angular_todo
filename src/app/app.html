@@ -1,8 +1,12 @@
 <div class="max-w-2xl mx-auto p-6">
   <h1 class="text-3xl font-bold mb-6">TODO App</h1>
   <app-todo-form (todoAdded)="addTodo($event)" />
+  <app-todo-filter
+    [currentFilter]="filter()"
+    (filterChanged)="setFilter($event)"
+  />
   <app-todo-list
-    [todos]="todos()"
+    [todos]="filteredTodos()"
     (todoToggled)="toggleTodo($event)"
     (todoDeleted)="deleteTodo($event)"
   />

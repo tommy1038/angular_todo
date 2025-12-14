@@ -1,11 +1,12 @@
-import { Component, signal, ChangeDetectionStrategy } from '@angular/core';
+import { Component, signal, computed, ChangeDetectionStrategy } from '@angular/core';
 import { TodoList } from './components/todo-list/todo-list';
 import { TodoForm } from './components/todo-form/todo-form';
-import { Todo } from './models/todo.model';
+import { TodoFilter } from './components/todo-filter/todo-filter';
+import { Todo, FilterType } from './models/todo.model';
 
 @Component({
   selector: 'app-root',
-  imports: [TodoList, TodoForm],
+  imports: [TodoList, TodoForm, TodoFilter],
   templateUrl: './app.html',
   styleUrl: './app.css',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -33,6 +34,23 @@ export class App {
     }
   ]);
 
+  // Phase 4: フィルター機能
+  protected readonly filter = signal<FilterType>('all');
+
+  protected readonly filteredTodos = computed(() => {
+    const allTodos = this.todos();
+    const currentFilter = this.filter();
+
+    switch (currentFilter) {
+      case 'active':
+        return allTodos.filter(todo => !todo.completed);
+      case 'completed':
+        return allTodos.filter(todo => todo.completed);
+      default:
+        return allTodos;
+    }
+  });
+
   // Phase 2: TODO追加機能
   protected addTodo(title: string): void {
     const newTodo: Todo = {
@@ -57,5 +75,9 @@ export class App {
 
   protected deleteTodo(id: string): void {
     this.todos.update(todos => todos.filter(todo => todo.id !== id));
+  }
+
+  protected setFilter(newFilter: FilterType): void {
+    this.filter.set(newFilter);
   }
 }
