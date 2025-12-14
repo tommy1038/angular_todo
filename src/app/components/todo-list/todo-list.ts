@@ -7,7 +7,7 @@ import { TodoItem } from '../todo-item/todo-item';
   imports: [TodoItem],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="mt-4">
+    <div class="mt-4" role="list" aria-label="Todo list">
       @for (todo of todos(); track todo.id) {
         <app-todo-item
           [todo]="todo"
@@ -15,7 +15,9 @@ import { TodoItem } from '../todo-item/todo-item';
           (deleted)="todoDeleted.emit(todo.id)"
         />
       } @empty {
-        <p class="text-gray-400 text-center p-4">No todos yet</p>
+        <p class="text-gray-400 text-center p-4" role="status" aria-live="polite">
+          No todos yet. Add one to get started!
+        </p>
       }
     </div>
   `
