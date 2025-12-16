@@ -1,13 +1,19 @@
-<div class="max-w-2xl mx-auto p-6">
+<main class="max-w-2xl mx-auto p-6" role="main" aria-label="Todo application">
   <h1 class="text-3xl font-bold mb-6">TODO App</h1>
-  <app-todo-form (todoAdded)="addTodo($event)" />
-  <app-todo-filter
-    [currentFilter]="currentFilter()"
-    (filterChanged)="changeFilter($event)"
-  />
-  <app-todo-list
-    [todos]="filteredTodos()"
-    (todoToggled)="toggleTodo($event)"
-    (todoDeleted)="deleteTodo($event)"
-  />
-</div>
+  <section aria-label="Add new todo">
+    <app-todo-form (todoAdded)="addTodo($event)" />
+  </section>
+  <section aria-label="Filter todos">
+    <app-todo-filter
+      [currentFilter]="currentFilter()"
+      (filterChanged)="changeFilter($event)"
+    />
+  </section>
+  <section aria-label="Todo list">
+    <app-todo-list
+      [todos]="filteredTodos()"
+      (todoToggled)="toggleTodo($event)"
+      (todoDeleted)="deleteTodo($event)"
+    />
+  </section>
+</main>

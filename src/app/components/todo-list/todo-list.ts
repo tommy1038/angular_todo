@@ -7,17 +7,21 @@ import { TodoItem } from '../todo-item/todo-item';
   imports: [TodoItem],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="mt-4">
+    <ul class="mt-4" role="list" aria-label="Todo list">
       @for (todo of todos(); track todo.id) {
-        <app-todo-item
-          [todo]="todo"
-          (toggled)="todoToggled.emit(todo.id)"
-          (deleted)="todoDeleted.emit(todo.id)"
-        />
+        <li role="listitem">
+          <app-todo-item
+            [todo]="todo"
+            (toggled)="todoToggled.emit(todo.id)"
+            (deleted)="todoDeleted.emit(todo.id)"
+          />
+        </li>
       } @empty {
-        <p class="text-gray-400 text-center p-4">No todos yet</p>
+        <li role="listitem">
+          <p class="text-gray-400 text-center p-4">No todos yet</p>
+        </li>
       }
-    </div>
+    </ul>
   `
 })
 export class TodoList {

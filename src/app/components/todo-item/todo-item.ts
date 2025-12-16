@@ -11,18 +11,22 @@ import { Todo } from '../../models/todo.model';
         type="checkbox"
         [checked]="todo().completed"
         (change)="toggled.emit()"
-        class="w-5 h-5 text-blue-500 rounded cursor-pointer"
+        [attr.aria-label]="'Mark ' + todo().title + ' as ' + (todo().completed ? 'incomplete' : 'complete')"
+        class="w-5 h-5 text-blue-500 rounded cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
       />
       <span
         [class.line-through]="todo().completed"
         [class.text-gray-400]="todo().completed"
+        [attr.aria-label]="todo().completed ? 'Completed: ' + todo().title : todo().title"
         class="flex-1"
       >
         {{ todo().title }}
       </span>
       <button
+        type="button"
         (click)="deleted.emit()"
-        class="px-3 py-1 text-sm text-red-600 hover:bg-red-50 rounded transition-colors"
+        [attr.aria-label]="'Delete ' + todo().title"
+        class="px-3 py-1 text-sm text-red-600 hover:bg-red-50 rounded transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
       >
         Delete
       </button>
