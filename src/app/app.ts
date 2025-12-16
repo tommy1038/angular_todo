@@ -1,7 +1,8 @@
-import { Component, signal, computed, ChangeDetectionStrategy } from '@angular/core';
+import { Component, signal, computed, effect, inject, ChangeDetectionStrategy } from '@angular/core';
 import { TodoList } from './components/todo-list/todo-list';
 import { TodoForm } from './components/todo-form/todo-form';
 import { TodoFilter } from './components/todo-filter/todo-filter';
+import { TodoStorageService } from './services/todo-storage.service';
 import { Todo, FilterType } from './models/todo.model';
 
 @Component({
@@ -12,6 +13,8 @@ import { Todo, FilterType } from './models/todo.model';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class App {
+  private readonly storageService = inject(TodoStorageService);
+
   protected readonly todos = signal<Todo[]>([]);
   protected readonly currentFilter = signal<FilterType>('all');
 
@@ -29,6 +32,18 @@ export class App {
         return todos;
     }
   });
+
+  constructor() {
+    // Phase 5: 初期化時にLocal StorageからTODOを読み込む
+    const savedTodos = this.storageService.loadTodos();
+    this.todos.set(savedTodos);
+
+    // Phase 5: TODOが変更されたら自動保存
+    effect(() => {
+      const currentTodos = this.todos();
+      this.storageService.saveTodos(currentTodos);
+    });
+  }
 
   // Phase 2: TODO追加機能
   protected addTodo(title: string): void {
